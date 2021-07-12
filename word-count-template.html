@@ -1,0 +1,58 @@
+<!-- Google Docs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<!-- Metro 4 -->
+	<link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+</head>
+
+<body>
+  <div class="mt-4">
+    <h4 class="text-center">Word Count App</h4>
+  </div>
+
+	<div class="mb-4 d-flex flex-justify-center">
+		<button class="button success" id="updateButton">Update Counts</button>
+	</div>
+
+	<table class="table" data-role="table" id="wordTable">
+		<thead>
+			<tr>
+				<th data-sortable="true">Word</th>
+				<th data-sortable="true" data-format="int">Count</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	<!-- Metro 4 -->
+	<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+	<script>
+		let WordCountApp = {};
+
+    WordCountApp.updateData = function() {
+      google.script.run.withSuccessHandler(wordsArray => {
+        WordCountApp.table.setItems(wordsArray);
+        WordCountApp.table.reaload();
+      }).wordCounts();
+    }
+
+    WordCountApp.afterPageLoad = function() {
+      WordCountApp.table = Metro.getPlugin("#wordTable", "table");
+      WordCountApp.updateData();
+      WordCountApp.button = document.getElementById("updateButton");
+      WordCountApp.button.addEventListener("click", WordCountApp.updateData);
+    }
+
+    document.addEventListener("DOMContentLoaded", WordCountApp.afterPageLoad);
+	</script>
+</body>
+
+</html>
